@@ -123,11 +123,7 @@ Installing a snap is very quick. Snaps are secure. They are isolated with all of
 
 * Arch Linux (via [AUR](https://aur.archlinux.org/)):
   - Stable release: [`monero`](https://aur.archlinux.org/packages/monero)
-  - Bleeding edge: [`monero-git`](https://aur.archlinux.org/packages/monero-git)
-
-* Void Linux:
-
-    xbps-install -S monero
+  - Bleeding edge: [`bitmonero-git`](https://aur.archlinux.org/packages/bitmonero-git)
 
 * OS X via [Homebrew](http://brew.sh)
 
@@ -159,24 +155,24 @@ sources are also used for statically-linked builds because distribution
 packages often include only shared library binaries (`.so`) but not static
 library archives (`.a`).
 
-| Dep            | Min. Version  | Vendored | Debian/Ubuntu Pkg  | Arch Pkg       | Optional | Purpose        |
-| -------------- | ------------- | ---------| ------------------ | -------------- | -------- | -------------- |
-| GCC            | 4.7.3         | NO       | `build-essential`  | `base-devel`   | NO       |                |
-| CMake          | 3.0.0         | NO       | `cmake`            | `cmake`        | NO       |                |
-| pkg-config     | any           | NO       | `pkg-config`       | `base-devel`   | NO       |                |
-| Boost          | 1.58          | NO       | `libboost-all-dev` | `boost`        | NO       | C++ libraries  |
-| OpenSSL        | basically any | NO       | `libssl-dev`       | `openssl`      | NO       | sha256 sum     |
-| libzmq         | 3.0.0         | NO       | `libzmq3-dev`      | `zeromq`       | NO       | ZeroMQ library |
-| libunbound     | 1.4.16        | YES      | `libunbound-dev`   | `unbound`      | NO       | DNS resolver   |
-| libminiupnpc   | 2.0           | YES      | `libminiupnpc-dev` | `miniupnpc`    | YES      | NAT punching   |
-| libunwind      | any           | NO       | `libunwind8-dev`   | `libunwind`    | YES      | Stack traces   |
-| liblzma        | any           | NO       | `liblzma-dev`      | `xz`           | YES      | For libunwind  |
-| libreadline    | 6.3.0         | NO       | `libreadline6-dev` | `readline`     | YES      | Input editing  |
-| ldns           | 1.6.17        | NO       | `libldns-dev`      | `ldns`         | YES      | SSL toolkit    |
-| expat          | 1.1           | NO       | `libexpat1-dev`    | `expat`        | YES      | XML parsing    |
-| GTest          | 1.5           | YES      | `libgtest-dev`^    | `gtest`        | YES      | Test suite     |
-| Doxygen        | any           | NO       | `doxygen`          | `doxygen`      | YES      | Documentation  |
-| Graphviz       | any           | NO       | `graphviz`         | `graphviz`     | YES      | Documentation  |
+| Dep            | Min. Version  | Vendored | Debian/Ubuntu Pkg  | Arch Pkg       | Fedora            | Optional | Purpose        |
+| -------------- | ------------- | ---------| ------------------ | -------------- | --------          | -------- | -------------- |
+| GCC            | 4.7.3         | NO       | `build-essential`  | `base-devel`   | `GCC`             | NO       |                |
+| CMake          | 3.0.0         | NO       | `cmake`            | `cmake`        | `cmake`           | NO       |                |
+| pkg-config     | any           | NO       | `pkg-config`       | `base-devel`   | `pkgconfig`       | NO       |                |
+| Boost          | 1.58          | NO       | `libboost-all-dev` | `boost`        | `boost-devel`     | NO       | C++ libraries  |
+| OpenSSL        | basically any | NO       | `libssl-dev`       | `openssl`      | `OpenSSL-devel`   | NO       | sha256 sum     |
+| libzmq         | 3.0.0         | NO       | `libzmq3-dev`      | `zeromq`       | `cppzmq-devel`    | NO       | ZeroMQ library |
+| libunbound     | 1.4.16        | YES      | `libunbound-dev`   | `unbound`      | `unbound-devel`   | NO       | DNS resolver   |
+| libminiupnpc   | 2.0           | YES      | `libminiupnpc-dev` | `miniupnpc`    | `miniupnpc-devel` | YES      | NAT punching   |
+| libunwind      | any           | NO       | `libunwind8-dev`   | `libunwind`    | `libunwind-devel` | YES      | Stack traces   |
+| liblzma        | any           | NO       | `liblzma-dev`      | `xz`           | `xz-devel`        | YES      | For libunwind  |
+| libreadline    | 6.3.0         | NO       | `libreadline6-dev` | `readline`     | `readline-devel`  | YES      | Input editing  |
+| ldns           | 1.6.17        | NO       | `libldns-dev`      | `ldns`         | `ldns-devel`      | YES      | SSL toolkit    |
+| expat          | 1.1           | NO       | `libexpat1-dev`    | `expat`        | `expat-devel`     | YES      | XML parsing    |
+| GTest          | 1.5           | YES      | `libgtest-dev`^    | `gtest`        | `gtest-devel`     | YES      | Test suite     |
+| Doxygen        | any           | NO       | `doxygen`          | `doxygen`      | `doxygen`         | YES      | Documentation  |
+| Graphviz       | any           | NO       | `graphviz`         | `graphviz`     | `graphviz-devel`  | YES      | Documentation  |
 
 [^] On Debian/Ubuntu `libgtest-dev` only includes sources and headers. You must
 build the library binary manually. This can be done with the following command ```sudo apt-get install libgtest-dev && cd /usr/src/gtest && sudo cmake . && sudo make && sudo mv libg* /usr/lib/ ```
@@ -418,7 +414,7 @@ See [README.i18n.md](README.i18n.md).
 
 ## Using Tor
 
-While Monero isn't made to integrate with Tor, it can be used wrapped with torsocks, if you add --p2p-bind-ip 127.0.0.1 to the monerod command line. You also want to set DNS requests to go over TCP, so they'll be routed through Tor, by setting DNS_PUBLIC=tcp or use a particular DNS server with DNS_PUBLIC=tcp://a.b.c.d (default is 8.8.4.4, which is Google DNS). You may also disable IGD (UPnP port forwarding negotiation), which is pointless with Tor. To allow local connections from the wallet, you might have to add TORSOCKS_ALLOW_INBOUND=1, some OSes need it and some don't. Example:
+While Monero isn't made to integrate with Tor, it can be used wrapped with torsocks, if you add --p2p-bind-ip 127.0.0.1 to the monerod command line. You also want to set DNS requests to go over TCP, so they'll be routed through Tor, by setting DNS_PUBLIC=tcp. You may also disable IGD (UPnP port forwarding negotiation), which is pointless with Tor. To allow local connections from the wallet, you might have to add TORSOCKS_ALLOW_INBOUND=1, some OSes need it and some don't. Example:
 
 `DNS_PUBLIC=tcp torsocks monerod --p2p-bind-ip 127.0.0.1 --no-igd`
 
